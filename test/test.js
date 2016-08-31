@@ -93,6 +93,14 @@ describe("markdown-it-video", function () {
     });
   });
 
+  describe("vimeo with background option", function () {
+    testFixture("services/vimeo-background", {
+      vimeo: {
+        isBackground: true
+      }
+    });
+  });
+
   for (let serviceName of [ "prezi", "vimeo", "vine", "youtube" ]) {
     describe(`service: ${serviceName}`, function () {
       testFixture(`services/${serviceName}`);
