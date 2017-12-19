@@ -1,0 +1,7 @@
+Coverage. Facebook from post url
+
+.
+@[facebook](https://www.facebook.com/TrongThanh/posts/10156889118372564)
+.
+<div class="block-embed block-embed-service-facebook"><iframe src="https://www.facebook.com/plugins/post.php?href=https://www.facebook.com/TrongThanh/posts/10156889118372564" width="500" height="500"></iframe></div>
+.
