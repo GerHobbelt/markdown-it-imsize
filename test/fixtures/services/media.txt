@@ -1,0 +1,7 @@
+Coverage. Gallery shortcode
+
+.
+@[media](1)
+.
+<div class="block-embed block-embed-service-media">[media id=1 ][/media]</div>
+.

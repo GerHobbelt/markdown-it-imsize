@@ -77,7 +77,7 @@ describe("markdown-it-video", function () {
     });
   });
 
-  for (let serviceName of [ "prezi", "vimeo", "vine", "youtube", "twitter", "facebook" ]) {
+  for (let serviceName of [ "prezi", "vimeo", "vine", "youtube", "twitter", "facebook", "gallery", "media" ]) {
     describe(`service: ${serviceName}`, function () {
       testFixture(`services/${serviceName}`);
     });
