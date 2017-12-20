@@ -1,0 +1,7 @@
+Coverage. Gallery shortcode
+
+.
+@[gallery](1)
+.
+<div class="block-embed block-embed-service-facebook">[gallery id=1][/gallery]</div>
+.
