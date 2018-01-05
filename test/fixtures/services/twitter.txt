@@ -3,5 +3,5 @@ Coverage. Twitter from tweet url
 .
 @[twitter](https://twitter.com/JPN_PMO/status/943023008355983360)
 .
-<div class="block-embed block-embed-service-twitter"><blockquote class="twitter-tweet" data-lang="en" dir="ltr"><p lang="en" dir="ltr"><a href="https://twitter.com/JPN_PMO/status/943023008355983360"></a></blockquote></div>
+<div class="block-embed block-embed-service-twitter"><blockquote class="twitter-tweet" data-lang="en" dir="ltr"><p lang="en" dir="ltr"><a href="https://twitter.com/JPN_PMO/status/943023008355983360"></a></p></blockquote></div>
 .
