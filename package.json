@@ -2,8 +2,10 @@
   "name": "@gerhobbelt/markdown-it-imsize",
   "version": "2.0.1-1",
   "description": "Markdown-it plugin to specify image size",
+  "type": "module",
   "main": "lib/index.js",
   "scripts": {
+    "build": "make",
     "test": "make test",
     "pub": "npm publish --access public"
   },
@@ -23,16 +25,16 @@
   ],
   "dependencies": {},
   "devDependencies": {
+    "@gerhobbelt/markdown-it": "10.0.0-31",
+    "@gerhobbelt/markdown-it-testgen": "0.1.6-7",
     "chai": "4.2.0",
-    "coveralls": "3.0.7",
-    "eslint": "6.6.0",
+    "coveralls": "3.0.11",
+    "eslint": "6.8.0",
     "eslint-plugin-nodeca": "1.0.3",
-    "istanbul": "0.4.5",
-    "@gerhobbelt/markdown-it": "10.0.0-30",
-    "@gerhobbelt/markdown-it-testgen": "0.1.5-6",
-    "mocha": "6.2.2",
+    "mocha": "7.1.1",
+    "nyc": "15.0.1",
     "should": "13.2.3",
-    "uglify-js": "3.6.8",
-    "webpack": "4.41.2"
+    "webpack": "4.42.1",
+    "webpack-cli": "3.3.11"
   }
 }

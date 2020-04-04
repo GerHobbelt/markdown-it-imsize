@@ -2,11 +2,11 @@
 
 var assert = require('assert');
 var path = require('path');
-var generate = require('markdown-it-testgen');
+var generate = require('@gerhobbelt/markdown-it-testgen');
 var should = require('should');
 
 describe('markdown-it-imsize', function() {
-  var md = require('markdown-it')({
+  var md = require('@gerhobbelt/markdown-it')({
     html: true,
     linkify: true,
     typography: true
@@ -15,7 +15,7 @@ describe('markdown-it-imsize', function() {
 });
 
 describe('markdown-it-imsize (autofill)', function() {
-  var md = require('markdown-it')({
+  var md = require('@gerhobbelt/markdown-it')({
     html: true,
     linkify: true,
     typography: true
@@ -28,7 +28,7 @@ describe('image size detector', function() {
   var types = require('../lib/imsize/types');
 
   it('image size detector', function(done) {
-    types.forEach(function(type) {
+    Object.entries(types).forEach(([type, def]) => {
       var dim = imsize('./test/img/lena.' + type);
       assert.equal(dim.width, 128);
       assert.equal(dim.height, 128);
@@ -37,7 +37,7 @@ describe('image size detector', function() {
   });
 
   it('imsize detector anync', function() {
-    types.forEach(function(type) {
+    Object.entries(types).forEach(([type, def]) => {
       imsize('./test/img/lena.' + type, function(err, dim) {
         assert.equal(dim.width, 128);
         assert.equal(dim.height, 128);

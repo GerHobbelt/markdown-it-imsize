@@ -2,7 +2,7 @@
 
 
 var p      = require('path');
-var load   = require('markdown-it-testgen').load;
+var load   = require('@gerhobbelt/markdown-it-testgen').load;
 var assert = require('chai').assert;
 
 function normalize(text) {
@@ -27,7 +27,7 @@ function generate(path, md) {
 }
 
 describe('CommonMark', function () {
-  var md = require('markdown-it')('commonmark').use(require('../'));
+  var md = require('@gerhobbelt/markdown-it')('commonmark').use(require('../'));
 
   generate(p.join(__dirname, 'fixtures/commonmark/good.txt'), md);
 });

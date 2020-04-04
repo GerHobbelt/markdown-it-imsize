@@ -1,20 +1,24 @@
+
+all: publish coverage
+
 coverage:
 	rm -rf coverage
-	istanbul cover node_modules/.bin/_mocha
+	nyc mocha
 
 lint:
-	eslint --reset .
+	eslint .
+
+lintfix:
+	eslint --fix .
 
 publish:
 	webpack ./
-	uglifyjs dist/markdown-it-imsize.js > dist/markdown-it-imsize.min.js
-	bower register markdown-it-imsize https://github.com/tatsy/markdown-it-imsize.git
 
 test:
 	mocha
 
-test-ci:
-	istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+test-ci: coverage
+	#istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
 
-.PHONY: lint coverage
+.PHONY: all lint lintfix coverage publish test test-ci
 .SILENT: lint
