@@ -1,7 +1,7 @@
 {
-  "name": "@gerhobbelt/markdown-it-imsize",
-  "version": "2.0.1-1",
-  "description": "Markdown-it plugin to specify image size",
+  "name": "@gerhobbelt/markdown-it-video",
+  "version": "1.0.0-1",
+  "description": "Markdown-it plugin to embed a hosted videos",
   "type": "module",
   "main": "lib/index.js",
   "scripts": {
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/GerHobbelt/markdown-it-imsize"
+    "url": "https://github.com/brianjgeiger/markdown-it-video"
   },
-  "author": "tatsy",
+  "author": "brianjgeiger",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/GerHobbelt/markdown-it-imsize/issues"
+    "url": "https://github.com/brianjgeiger/markdown-it-video/issues"
   },
-  "homepage": "https://github.com/GerHobbelt/markdown-it-imsize",
+  "homepage": "https://github.com/brianjgeiger/markdown-it-video",
   "keywords": [
     "markdown-it",
     "markdown-it-plugin"
@@ -36,5 +36,8 @@
     "should": "13.2.3",
     "webpack": "4.42.1",
     "webpack-cli": "3.3.11"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

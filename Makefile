@@ -17,8 +17,8 @@ publish:
 test:
 	mocha
 
-test-ci: coverage
+report_coverage: coverage
 	#istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
 
-.PHONY: all lint lintfix coverage publish test test-ci
+.PHONY: all lint lintfix coverage publish test report_coverage
 .SILENT: lint

@@ -12,6 +12,15 @@
 git commit -m "Bump version"
 ```
 
+---
+
+```
+npm run release
+```
+
+---
+
+
 * Add git tag.
 
 ```
