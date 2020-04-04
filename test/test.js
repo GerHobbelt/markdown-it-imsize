@@ -23,30 +23,3 @@ describe('markdown-it-imsize (autofill)', function() {
   generate(path.join(__dirname, 'fixtures/markdown-it-imsize/autofill.txt'), md);
 });
 
-describe('image size detector', function() {
-  var imsize = require('../lib/imsize');
-  var types = require('../lib/imsize/types');
-
-  it('image size detector', function(done) {
-    Object.entries(types).forEach(([type, def]) => {
-      var dim = imsize('./test/img/lena.' + type);
-      assert.equal(dim.width, 128);
-      assert.equal(dim.height, 128);
-    });
-    done();
-  });
-
-  it('imsize detector anync', function() {
-    Object.entries(types).forEach(([type, def]) => {
-      imsize('./test/img/lena.' + type, function(err, dim) {
-        assert.equal(dim.width, 128);
-        assert.equal(dim.height, 128);
-      });
-    });
-  });
-
-  it('invalid operation', function(done) {
-    (function() { imsize('./test/img/lena.svg') }).should.throw();
-    done();
-  });
-});
