@@ -65,6 +65,22 @@ describe("markdown-it-video", function () {
     });
   });
 
+  describe("with instance size attributes", function () {
+    testFixtureWithExampleService("instance-size-attributes", {
+      allowFullScreen: true,
+      allowInstancePlayerSizeDefinition: true
+    });
+  });
+
+  describe("with aspect ratio attributes", function () {
+    testFixtureWithExampleService("aspect-ratio", {
+      allowFullScreen: true,
+      allowInstancePlayerSizeDefinition: true,
+      outputPlayerSize: false,
+      outputPlayerAspectRatio: true
+    });
+  });
+
   describe("providing custom services", function () {
     testFixture("custom-service", {
       services: {
@@ -73,6 +89,14 @@ describe("markdown-it-video", function () {
       },
       custom: {
         magicNumber: 123
+      }
+    });
+  });
+
+  describe("vimeo with background option", function () {
+    testFixture("services/vimeo-background", {
+      vimeo: {
+        isBackground: true
       }
     });
   });

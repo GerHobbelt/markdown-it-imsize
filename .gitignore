@@ -51,3 +51,6 @@ ehthumbs.db
 Desktop.ini
 
 /playground.js
+
+/.nyc_output/
+
