@@ -1,6 +1,6 @@
 {
   "name": "@hackmd/markdown-it-imsize",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Markdown-it plugin to specify image size",
   "main": "lib/index.js",
   "scripts": {
