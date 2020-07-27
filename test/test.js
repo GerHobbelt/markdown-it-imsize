@@ -1,25 +1,26 @@
-'use strict';
 
-var assert = require('assert');
-var path = require('path');
-var generate = require('@gerhobbelt/markdown-it-testgen');
-var should = require('should');
+/* eslint-env mocha, es6 */
 
-describe('markdown-it-imsize', function() {
-  var md = require('@gerhobbelt/markdown-it')({
+let path = require('path');
+let generate = require('@gerhobbelt/markdown-it-testgen');
+const Md = require('@gerhobbelt/markdown-it');
+const plugin = require('../');
+
+describe('markdown-it-imsize', function () {
+  let md = Md({
     html: true,
     linkify: true,
     typography: true
-  }).use(require('../lib'));
+  }).use(plugin);
   generate(path.join(__dirname, 'fixtures/markdown-it-imsize/imsize.txt'), md);
 });
 
-describe('markdown-it-imsize (autofill)', function() {
-  var md = require('@gerhobbelt/markdown-it')({
+describe('markdown-it-imsize (autofill)', function () {
+  let md = Md({
     html: true,
     linkify: true,
     typography: true
-  }).use(require('../lib'), { autofill: true });
+  }).use(plugin, { autofill: true });
   generate(path.join(__dirname, 'fixtures/markdown-it-imsize/autofill.txt'), md);
 });
 

@@ -2,32 +2,47 @@
   "name": "@gerhobbelt/markdown-it-imsize",
   "version": "2.0.4-2",
   "description": "Markdown-it plugin to specify image size",
-  "type": "module",
-  "main": "lib/index.js",
-  "scripts": {
-    "build": "make",
-    "test": "make test",
-    "pub": "npm publish --access public"
-  },
+  "keywords": [
+    "markdown-it-plugin",
+    "markdown-it",
+    "markdown",
+    "image size"
+  ],
   "repository": "GerHobbelt/markdown-it-imsize",
   "author": "tatsy",
   "license": "MIT",
-  "keywords": [
-    "markdown-it",
-    "markdown-it-plugin"
-  ],
-  "dependencies": {},
+  "type": "module",
+  "source": "lib/index.js",
+  "main": "dist/markdownItImSize.js",
+  "module": "dist/markdownItImSize.mjs",
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "build": "make",
+    "test": "make test",
+    "todo": "make todo",
+    "clean": "make clean",
+    "superclean": "make superclean",
+    "doc": "make doc",
+    "lint": "make lint",
+    "lintfix": "make lintfix",
+    "cov": "make report-coverage",
+    "pub": "npm publish --access public"
+  },
   "devDependencies": {
-    "@gerhobbelt/markdown-it": "10.0.0-31",
-    "@gerhobbelt/markdown-it-testgen": "0.1.6-7",
-    "chai": "4.2.0",
-    "coveralls": "3.0.11",
-    "eslint": "6.8.0",
-    "eslint-plugin-nodeca": "1.0.3",
-    "mocha": "7.1.1",
-    "nyc": "15.0.1",
-    "should": "13.2.3",
-    "webpack": "4.42.1",
-    "webpack-cli": "3.3.11"
-  }
+    "@gerhobbelt/markdown-it": "11.0.1-43",
+    "@gerhobbelt/markdown-it-testgen": "0.1.6-17",
+    "@gerhobbelt/prepend-header": "1.0.8-3",
+    "cross-env": "7.0.2",
+    "eslint": "7.5.0",
+    "microbundle": "0.12.3",
+    "mocha": "8.0.1",
+    "nyc": "15.1.0"
+  },
+  "reporter": [
+    "lcov",
+    "text",
+    "text-summary"
+  ]
 }
