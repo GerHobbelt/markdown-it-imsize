@@ -1,15 +1,24 @@
+
+all: publish coverage
+
 coverage:
-			rm -rf coverage
-			istanbul cover node_modules/.bin/_mocha
+	rm -rf coverage
+	nyc mocha
 
 lint:
-			./node_modules/.bin/eslint --reset .
+	eslint .
 
-test: lint
-			mocha
+lintfix:
+	eslint --fix .
 
-test-ci: lint
-			istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+publish:
+	webpack ./
 
-.PHONY: lint coverage
+test:
+	mocha
+
+report_coverage: coverage
+	#istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+
+.PHONY: all lint lintfix coverage publish test report_coverage
 .SILENT: lint

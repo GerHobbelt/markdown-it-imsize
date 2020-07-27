@@ -1,11 +1,13 @@
 {
-  "name": "@centerforopenscience/markdown-it-video",
-  "version": "1.0.0",
+  "name": "@gerhobbelt/markdown-it-video",
+  "version": "1.0.0-1",
   "description": "Markdown-it plugin to embed a hosted videos",
-  "main": "index.js",
+  "type": "module",
+  "main": "lib/index.js",
   "scripts": {
-    "release": "np",
-    "test": "eslint . && mocha"
+    "build": "make",
+    "test": "make test",
+    "pub": "npm publish --access public"
   },
   "repository": {
     "type": "git",
@@ -23,16 +25,17 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "eslint": "^4.9.0",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "@gerhobbelt/markdown-it": "10.0.0-31",
+    "@gerhobbelt/markdown-it-testgen": "0.1.6-7",
+    "chai": "4.2.0",
+    "coveralls": "3.0.11",
+    "eslint": "6.8.0",
     "eslint-plugin-nodeca": "1.0.3",
-    "eslint-plugin-react": "^7.4.0",
-    "markdown-it": "8.4.0",
-    "markdown-it-testgen": "0.1.4",
-    "mocha": "4.0.1",
-    "np": "^3.0.4"
+    "mocha": "7.1.1",
+    "nyc": "15.0.1",
+    "should": "13.2.3",
+    "webpack": "4.42.1",
+    "webpack-cli": "3.3.11"
   },
   "publishConfig": {
     "access": "public"

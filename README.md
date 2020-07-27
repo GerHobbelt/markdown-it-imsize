@@ -3,6 +3,9 @@
 > markdown-it plugin for embedding hosted videos.
 
 [![Build Status](https://travis-ci.org/CenterForOpenScience/markdown-it-video.svg?branch=master)](https://travis-ci.org/CenterForOpenScience/markdown-it-video)
+[![Dependency Status](https://david-dm.org/CenterForOpenScience/markdown-it-video.svg)](https://david-dm.org/CenterForOpenScience/markdown-it-video)
+[![devDependency Status](https://david-dm.org/CenterForOpenScience/markdown-it-video/dev-status.svg)](https://david-dm.org/CenterForOpenScience/markdown-it-video#info=devDependencies)
+
 
 ## Usage
 

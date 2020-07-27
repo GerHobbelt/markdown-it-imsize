@@ -1,6 +1,9 @@
 language: node_js
 node_js:
- - '6'
- - '8'
-after_success: make report-coverage
+  - 8
+  - 10
+  - 12
+  - node
+after_success:
+  - make report_coverage
 sudo: false
