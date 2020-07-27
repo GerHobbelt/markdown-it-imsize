@@ -2,42 +2,46 @@
   "name": "@gerhobbelt/markdown-it-block-embed",
   "version": "0.0.3-1",
   "description": "Plugin for markdown-it that detects and outputs block level embeds such as videos and supports custom embed services.",
-  "main": "lib/index.js",
-  "scripts": {
-    "build": "webpack lib/index.js dist/bundle.js",
-    "build-browser": "rm -rf dist && mkdir dist && browserify lib/index.js -o dist/markdown-it-block-embed.js -t [ babelify ]",
-    "test": "npm run test-lint && npm run test-spec",
-    "test-ci": "npm run test-lint && npm run test-coverage-ci",
-    "test-spec": "mocha",
-    "test-lint": "eslint lib && eslint test",
-    "test-coverage": "rm -rf coverage && istanbul cover node_modules/mocha/bin/_mocha",
-    "test-coverage-ci": "rm -rf coverage && istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat coverage/lcov.info | node node_modules/coveralls/bin/coveralls.js && rm -rf coverage"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/rotorz/markdown-it-block-embed"
-  },
+  "keywords": [
+    "markdown-it-plugin",
+    "markdown-it",
+    "markdown",
+    "block embedding"
+  ],
+  "repository": "rotorz/markdown-it-block-embed",
   "author": "Rotorz Limited",
   "license": "MIT",
-  "keywords": [
-    "markdown-it",
-    "markdown-it-plugin"
-  ],
-  "dependencies": {
+  "source": "lib/index.js",
+  "main": "dist/markdownItBlockEmbed.js",
+  "module": "dist/markdownItBlockEmbed.mjs",
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "build": "make",
+    "test": "make test",
+    "todo": "make todo",
+    "clean": "make clean",
+    "superclean": "make superclean",
+    "doc": "make doc",
+    "lint": "make lint",
+    "lintfix": "make lintfix",
+    "cov": "make report-coverage",
+    "pub": "npm publish --access public"
   },
   "devDependencies": {
-    "babel-preset-es2015": "^6.9.0",
-    "babel-register": "^6.9.0",
-    "babelify": "^7.3.0",
-    "browserify": "^13.0.1",
-    "coveralls": "^2.11.2",
-    "eslint": "^3.0.1",
-    "eslint-config-xo": "^0.13.0",
-    "istanbul": "^0.3.5",
-    "@gerhobbelt/markdown-it": "^4.1.0",
-    "@gerhobbelt/markdown-it-testgen": "^0.1.4",
-    "mocha": "^2.1.0",
-    "nyc": "^2.1.0",
-    "webpack": "^3.10.0"
-  }
+    "@gerhobbelt/markdown-it": "11.0.1-43",
+    "@gerhobbelt/markdown-it-testgen": "0.1.6-17",
+    "@gerhobbelt/prepend-header": "1.0.8-3",
+    "cross-env": "7.0.2",
+    "eslint": "7.5.0",
+    "microbundle": "0.12.3",
+    "mocha": "8.0.1",
+    "nyc": "15.1.0"
+  },
+  "reporter": [
+    "lcov",
+    "text",
+    "text-summary"
+  ]
 }

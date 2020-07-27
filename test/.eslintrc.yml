@@ -1,8 +1,0 @@
-env:
-  browser: true
-  es6: true
-  mocha: true
-  node: true
-extends: '../.eslintrc.yml'
-rules:
-  new-cap: 'off'

@@ -1,9 +1,8 @@
 // Copyright (c) Rotorz Limited and portions by original markdown-it-video authors
 // Licensed under the MIT license. See LICENSE file in the project root.
 
-"use strict";
 
-const VideoServiceBase = require("../../lib/services/VideoServiceBase");
+const VideoServiceBase = require('../../lib/services/VideoServiceBase.js');
 
 
 class CustomService extends VideoServiceBase {

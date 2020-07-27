@@ -1,4 +1,6 @@
-# markdown-it-block-embed [![Build Status](https://travis-ci.org/rotorz/markdown-it-block-embed.svg?branch=master)](https://travis-ci.org/rotorz/markdown-it-block-embed)
+# markdown-it-block-embed
+
+[![Build Status](https://travis-ci.org/rotorz/markdown-it-block-embed.svg?branch=master)](https://travis-ci.org/rotorz/markdown-it-block-embed)
 
 [![npm version](https://badge.fury.io/js/markdown-it-block-embed.svg)](https://badge.fury.io/js/markdown-it-block-embed)
 [![Dependency Status](https://david-dm.org/rotorz/markdown-it-block-embed.svg)](https://david-dm.org/rotorz/markdown-it-block-embed)
@@ -13,6 +15,7 @@ been added to control the output of the generated embed code.
 
 
 Example input:
+
 ```markdown
 Here is an embedded video:
 
@@ -20,6 +23,7 @@ Here is an embedded video:
 ```
 
 Output (with default options):
+
 ```html
 <div class="block-embed block-embed-service-youtube">
   <iframe type="text/html"
@@ -36,15 +40,15 @@ Output (with default options):
 ## Install
 
 ```
-$ npm install --save markdown-it-block-embed
+$ npm install --save @gerhobbelt/markdown-it-block-embed
 ```
 
 
 ## Usage
 
 ```javascript
-var md = require("markdown-it")();
-var blockEmbedPlugin = require("markdown-it-block-embed");
+var md = require("@gerhobbelt/markdown-it")();
+var blockEmbedPlugin = require("@gerhobbelt/markdown-it-block-embed");
 
 md.use(blockEmbedPlugin, {
   containerClassName: "video-embed"
