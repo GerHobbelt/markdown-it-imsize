@@ -1,1 +1,360 @@
-!function(e,r){"object"==typeof exports&&"object"==typeof module?module.exports=r():"function"==typeof define&&define.amd?define([],r):"object"==typeof exports?exports["markdown-it-imsize.js"]=r():e["markdown-it-imsize.js"]=r()}(window,(function(){return function(e){var r={};function t(o){if(r[o])return r[o].exports;var n=r[o]={i:o,l:!1,exports:{}};return e[o].call(n.exports,n,n.exports,t),n.l=!0,n.exports}return t.m=e,t.c=r,t.d=function(e,r,o){t.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:o})},t.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},t.t=function(e,r){if(1&r&&(e=t(e)),8&r)return e;if(4&r&&"object"==typeof e&&e&&e.__esModule)return e;var o=Object.create(null);if(t.r(o),Object.defineProperty(o,"default",{enumerable:!0,value:e}),2&r&&"string"!=typeof e)for(var n in e)t.d(o,n,function(r){return e[r]}.bind(null,n));return o},t.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(r,"a",r),r},t.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},t.p="",t(t.s=0)}([function(e,r,t){"use strict";var o=t(1);e.exports=function(e,r){e.inline.ruler.before("emphasis","image",function(e,r){return function(r,t){var n,i,s,c,u,a,f,p,l,d,h,v,m="",b="",k="",x=r.pos,y=r.posMax;if(33!==r.src.charCodeAt(r.pos))return!1;if(91!==r.src.charCodeAt(r.pos+1))return!1;if(u=r.pos+2,(c=e.helpers.parseLinkLabel(r,r.pos+1,!1))<0)return!1;if((a=c+1)<y&&40===r.src.charCodeAt(a)){for(a++;a<y&&(32===(i=r.src.charCodeAt(a))||10===i);a++);if(a>=y)return!1;for(v=a,(p=e.helpers.parseLinkDestination(r.src,a,r.posMax)).ok&&(k=r.md.normalizeLink(p.str),r.md.validateLink(k)?a=p.pos:k=""),v=a;a<y&&(32===(i=r.src.charCodeAt(a))||10===i);a++);if(p=e.helpers.parseLinkTitle(r.src,a,r.posMax),a<y&&v!==a&&p.ok)for(l=p.str,a=p.pos;a<y&&(32===(i=r.src.charCodeAt(a))||10===i);a++);else l="";if(a-1>=0&&32===(i=r.src.charCodeAt(a-1)))for((p=o(r.src,a,r.posMax)).ok&&(m=p.width,b=p.height,a=p.pos);a<y&&(32===(i=r.src.charCodeAt(a))||10===i);a++);if(a>=y||41!==r.src.charCodeAt(a))return r.pos=x,!1;a++}else{if(void 0===r.env.references)return!1;for(;a<y&&(32===(i=r.src.charCodeAt(a))||10===i);a++);if(a<y&&91===r.src.charCodeAt(a)?(v=a+1,(a=e.helpers.parseLinkLabel(r,a))>=0?s=r.src.slice(v,a++):a=c+1):a=c+1,s||(s=r.src.slice(u,c)),!(f=r.env.references[e.utils.normalizeReference(s)]))return r.pos=x,!1;k=f.href,l=f.title}if(!t){r.pos=u,r.posMax=c;var A=new r.md.inline.State(r.src.slice(u,c),r.md,r.env,h=[]);A.md.inline.tokenize(A),(d=r.push("image","img",0)).attrs=n=[["src",k],["alt",""]],d.children=h,l&&n.push(["title",l]),""!==m&&n.push(["width",m]),""!==b&&n.push(["height",b])}return r.pos=a,r.posMax=y,!0}}(e))}},function(e,r,t){"use strict";function o(e,r,t){var o,n=r,i={ok:!1,pos:r,value:""};for(o=e.charCodeAt(r);r<t&&o>=48&&o<=57||37===o;)o=e.charCodeAt(++r);return i.ok=!0,i.pos=r,i.value=e.slice(n,r),i}e.exports=function(e,r,t){var n,i={ok:!1,pos:0,width:"",height:""};if(r>=t)return i;if(61!==(n=e.charCodeAt(r)))return i;if(r++,n=e.charCodeAt(r),0===e.slice(r,t).indexOf("fill"))return i.width="100%",i.height="100%",i.pos=r+"fill".length,i.ok=!0,i;if(120!==n&&(n<48||n>57))return i;var s=o(e,r,t);if(r=s.pos,120!==(n=e.charCodeAt(r))&&s.value)return i.width=s.value,i.pos=r,i.ok=!0,i;if(120!==n)return i;var c=o(e,++r,t);return r=c.pos,i.width=s.value,i.height=c.value,i.pos=r,i.ok=!0,i}}])}));
+/*! markdown-it-imsize 2.0.4-2 https://github.com//GerHobbelt/markdown-it-imsize @license MIT */
+
+(function (factory) {
+  typeof define === 'function' && define.amd ? define(factory) :
+  factory();
+}((function () { 'use strict';
+
+  // Parse image size
+  //
+  function parseNextNumber(str, pos, max) {
+    let code,
+        start = pos,
+        result = {
+      ok: false,
+      pos: pos,
+      value: ''
+    };
+    code = str.charCodeAt(pos);
+
+    while (pos < max && code >= 0x30
+    /* 0 */
+    && code <= 0x39
+    /* 9 */
+    || code === 0x25
+    /* % */
+    ) {
+      code = str.charCodeAt(++pos);
+    }
+
+    result.ok = true;
+    result.pos = pos;
+    result.value = str.slice(start, pos);
+    return result;
+  }
+
+  function parseImageSize(str, pos, max) {
+    let code,
+        result = {
+      ok: false,
+      pos: 0,
+      width: '',
+      height: ''
+    };
+
+    if (pos >= max) {
+      return result;
+    }
+
+    code = str.charCodeAt(pos);
+
+    if (code !== 0x3d
+    /* = */
+    ) {
+        return result;
+      }
+
+    pos++; // size must follow = without any white spaces as follows
+    // (1) =300x200
+    // (2) =300x
+    // (3) =x200
+    // (4) =200
+    // (5) =50%
+    // (6) =fill
+
+    code = str.charCodeAt(pos);
+
+    if (str.slice(pos, max).indexOf('fill') === 0) {
+      result.width = '100%';
+      result.height = '100%';
+      result.pos = pos + 'fill'.length;
+      result.ok = true;
+      return result;
+    }
+
+    if (code !== 0x78
+    /* x */
+    && (code < 0x30 || code > 0x39)
+    /* [0-9] */
+    ) {
+        return result;
+      } // parse width
+
+
+    let resultW = parseNextNumber(str, pos, max);
+    pos = resultW.pos; // next character must be 'x' or it terminates in favor of a single dimension expression e.g. (4).
+
+    code = str.charCodeAt(pos);
+
+    if (code !== 0x78
+    /* x */
+    && resultW.value) {
+      result.width = resultW.value;
+      result.pos = pos;
+      result.ok = true;
+      return result;
+    }
+
+    if (code !== 0x78
+    /* x */
+    ) {
+        return result;
+      }
+
+    pos++; // parse height
+
+    let resultH = parseNextNumber(str, pos, max);
+    pos = resultH.pos;
+    result.width = resultW.value;
+    result.height = resultH.value;
+    result.pos = pos;
+    result.ok = true;
+    return result;
+  }
+
+  // Process ![test]( x =100x200)
+
+  function image_with_size(md, options) {
+    return function (state, silent) {
+      let attrs,
+          code,
+          label,
+          labelEnd,
+          labelStart,
+          pos,
+          ref,
+          res,
+          title,
+          width = '',
+          height = '',
+          token,
+          tokens,
+          start,
+          href = '',
+          oldPos = state.pos,
+          max = state.posMax,
+          endPos = state.pos;
+
+      if (state.src.charCodeAt(state.pos) !== 0x21
+      /* ! */
+      ) {
+          return false;
+        }
+
+      if (state.src.charCodeAt(state.pos + 1) !== 0x5B
+      /* [ */
+      ) {
+          return false;
+        }
+
+      labelStart = state.pos + 2;
+      labelEnd = md.helpers.parseLinkLabel(state, state.pos + 1, false); // parser failed to find ']', so it's not a valid link
+
+      if (labelEnd < 0) {
+        return false;
+      }
+
+      if (state.pending) {
+        state.pushPending();
+      }
+
+      pos = labelEnd + 1;
+
+      if (pos < max && state.src.charCodeAt(pos) === 0x28
+      /* ( */
+      ) {
+          //
+          // Inline link
+          //
+          // [link](  <href>  "title"  )
+          //        ^^ skipping these spaces
+          pos++;
+
+          for (; pos < max; pos++) {
+            code = state.src.charCodeAt(pos);
+
+            if (code !== 0x20 && code !== 0x0A) {
+              break;
+            }
+          }
+
+          if (pos >= max) {
+            return false;
+          } // [link](  <href>  "title"  )
+          //          ^^^^^^ parsing link destination
+
+
+          start = pos;
+          res = md.helpers.parseLinkDestination(state.src, pos, state.posMax);
+
+          if (res.ok) {
+            href = state.md.normalizeLink(res.str);
+
+            if (state.md.validateLink(href)) {
+              pos = res.pos;
+            } else {
+              href = '';
+            }
+          } // [link](  <href>  "title"  )
+          //                ^^ skipping these spaces
+
+
+          start = pos;
+
+          for (; pos < max; pos++) {
+            code = state.src.charCodeAt(pos);
+
+            if (code !== 0x20 && code !== 0x0A) {
+              break;
+            }
+          } // [link](  <href>  "title"  )
+          //                  ^^^^^^^ parsing link title
+
+
+          res = md.helpers.parseLinkTitle(state.src, pos, state.posMax);
+
+          if (pos < max && start !== pos && res.ok) {
+            title = res.str;
+            pos = res.pos; // [link](  <href>  "title"  )
+            //                         ^^ skipping these spaces
+
+            for (; pos < max; pos++) {
+              code = state.src.charCodeAt(pos);
+
+              if (code !== 0x20 && code !== 0x0A) {
+                break;
+              }
+            }
+          } else {
+            title = '';
+          } // [link](  <href>  "title" =WxH  )
+          //                          ^^^^ parsing image size
+
+
+          if (pos - 1 >= 0) {
+            code = state.src.charCodeAt(pos - 1); // there must be at least one white spaces
+            // between previous field and the size
+
+            if (code === 0x20) {
+              res = parseImageSize(state.src, pos, state.posMax);
+
+              if (res.ok) {
+                width = res.width;
+                height = res.height;
+                pos = res.pos;
+              } // [link](  <href>  "title" =WxH  )
+              //                              ^^ skipping these spaces
+
+
+              for (; pos < max; pos++) {
+                code = state.src.charCodeAt(pos);
+
+                if (code !== 0x20 && code !== 0x0A) {
+                  break;
+                }
+              }
+            }
+          }
+
+          if (pos >= max || state.src.charCodeAt(pos) !== 0x29
+          /* ) */
+          ) {
+              state.pos = oldPos;
+              return false;
+            }
+
+          endPos = pos;
+          pos++;
+        } else {
+        //
+        // Link reference
+        //
+        if (typeof state.env.references === 'undefined') {
+          return false;
+        } // [foo]  [bar]
+        //      ^^ optional whitespace (can include newlines)
+
+
+        for (; pos < max; pos++) {
+          code = state.src.charCodeAt(pos);
+
+          if (code !== 0x20 && code !== 0x0A) {
+            break;
+          }
+        }
+
+        if (pos < max && state.src.charCodeAt(pos) === 0x5B
+        /* [ */
+        ) {
+            start = pos + 1;
+            pos = md.helpers.parseLinkLabel(state, pos);
+
+            if (pos >= 0) {
+              endPos = pos;
+              label = state.src.slice(start, pos++);
+            } else {
+              pos = labelEnd + 1;
+              endPos = labelEnd;
+            }
+          } else {
+          pos = labelEnd + 1;
+          endPos = labelEnd;
+        } // covers label === '' and label === undefined
+        // (collapsed reference link and shortcut reference link respectively)
+
+
+        if (!label) {
+          label = state.src.slice(labelStart, labelEnd);
+        }
+
+        ref = state.env.references[md.utils.normalizeReference(label)];
+
+        if (!ref) {
+          state.pos = oldPos;
+          return false;
+        }
+
+        href = ref.href;
+        title = ref.title;
+      } //
+      // We found the end of the link, and know for a fact it's a valid link;
+      // so all that's left to do is to call tokenizer.
+      //
+
+
+      if (!silent) {
+        state.pos = labelStart;
+        state.posMax = labelEnd;
+        let newState = new state.md.inline.State(state.src.slice(labelStart, labelEnd), state.md, state.env, tokens = []);
+        newState.md.inline.tokenize(newState);
+        token = state.push('image', 'img', 0);
+        token.attrs = attrs = [['src', href], ['alt', '']];
+        token.children = tokens;
+        token.position = oldPos;
+        token.size = endPos - oldPos + 1;
+
+        if (title) {
+          attrs.push(['title', title]);
+        }
+
+        if (width !== '') {
+          attrs.push(['width', width]);
+        }
+
+        if (height !== '') {
+          attrs.push(['height', height]);
+        }
+      }
+
+      state.pos = pos;
+      state.posMax = max;
+      return true;
+    };
+  }
+
+  module.exports = function imsize_plugin(md, options) {
+    md.inline.ruler.before('emphasis', 'image', image_with_size(md));
+  };
+
+})));
+//# sourceMappingURL=markdownItImSize.umd.js.map
