@@ -1,43 +1,49 @@
+/*! markdown-it-video 1.0.0-2 https://github.com//GerHobbelt/markdown-it-video @license MIT */
+
 // Process @[youtube](youtubeVideoID)
 // Process @[vimeo](vimeoVideoID)
 // Process @[vine](vineVideoID)
 // Process @[prezi](preziID)
 // Process @[osf](guid)
 // Process @[local](url)
-
 const ytRegex = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+
 function youtubeParser(url) {
   const match = url.match(ytRegex);
   return match && match[7].length === 11 ? match[7] : url;
 }
-
 /* eslint-disable max-len */
+
+
 const vimeoRegex = /(?:http:|https:)?\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)/;
 /* eslint-enable max-len */
+
 function vimeoParser(url) {
   const match = url.match(vimeoRegex);
   return match && typeof match[3] === 'string' ? match[3] : url;
 }
 
 const vineRegex = /^http(?:s?):\/\/(?:www\.)?vine\.co\/v\/([a-zA-Z0-9]{1,13}).*/;
+
 function vineParser(url) {
   const match = url.match(vineRegex);
   return match && match[1].length === 11 ? match[1] : url;
 }
 
 const preziRegex = /^https:\/\/prezi.com\/(.[^/]+)/;
+
 function preziParser(url) {
   const match = url.match(preziRegex);
   return match ? match[1] : url;
-}
+} // TODO: Write regex for staging and local servers.
 
-// TODO: Write regex for staging and local servers.
+
 const mfrRegex = /^http(?:s?):\/\/(?:www\.)?mfr\.osf\.io\/render\?url=http(?:s?):\/\/osf\.io\/([a-zA-Z0-9]{1,5})\/\?action=download/;
+
 function mfrParser(url) {
   const match = url.match(mfrRegex);
   return match ? match[1] : url;
 }
-
 
 const EMBED_REGEX = /@\[([a-zA-Z].+)]\([\s]*(.*?)[\s]*[)]/im;
 
@@ -50,10 +56,13 @@ function videoEmbed(md, options) {
     let theState = state;
     const oldPos = state.pos;
 
-    if (state.src.charCodeAt(oldPos) !== 0x40/* @ */ ||
-      state.src.charCodeAt(oldPos + 1) !== 0x5B/* [ */) {
-      return false;
-    }
+    if (state.src.charCodeAt(oldPos) !== 0x40
+    /* @ */
+    || state.src.charCodeAt(oldPos + 1) !== 0x5B
+    /* [ */
+    ) {
+        return false;
+      }
 
     const match = EMBED_REGEX.exec(state.src.slice(state.pos, state.src.length));
 
@@ -75,30 +84,26 @@ function videoEmbed(md, options) {
       videoID = preziParser(videoID);
     } else if (serviceLower === 'osf') {
       videoID = mfrParser(videoID);
-    } else if (serviceLower === 'local') {
-      // videoID = videoID;
-    } else if (!options[serviceLower]) {
+    } else if (serviceLower === 'local') ; else if (!options[serviceLower]) {
       return false;
-    }
+    } // If the videoID field is empty, regex currently make it the close parenthesis.
 
-    // If the videoID field is empty, regex currently make it the close parenthesis.
+
     if (videoID === ')') {
       videoID = '';
     }
 
     serviceStart = oldPos + 2;
-    serviceEnd = md.helpers.parseLinkLabel(state, oldPos + 1, false);
-
-    //
+    serviceEnd = md.helpers.parseLinkLabel(state, oldPos + 1, false); //
     // We found the end of the link, and know for a fact it's a valid link;
     // so all that's left to do is to call tokenizer.
     //
+
     if (!silent) {
       theState.pos = serviceStart;
       theState.service = theState.src.slice(serviceStart, serviceEnd);
       const newState = new theState.md.inline.State(service, theState.md, theState.env, []);
       newState.md.inline.tokenize(newState);
-
       token = theState.push('video', '');
       token.videoID = videoID;
       token.service = service;
@@ -129,60 +134,66 @@ function extractVideoParameters(url) {
 
 function videoUrl(service, videoID, url, options) {
   switch (service) {
-  case 'youtube': {
-    const parameters = extractVideoParameters(url);
-    if (options.youtube.parameters) {
-      Object.keys(options.youtube.parameters).forEach((key) => {
-        parameters.set(key, options.youtube.parameters[key]);
-      });
-    }
+    case 'youtube':
+      {
+        const parameters = extractVideoParameters(url);
 
-      // Start time parameter can have the format t=0m10s or t=<time_in_seconds> in share URLs,
-      // but in embed URLs the parameter must be called 'start' and time must be in seconds
-    const timeParameter = parameters.get('t');
-    if (timeParameter !== undefined) {
-      let startTime = 0;
-      const timeParts = timeParameter.match(/[0-9]+/g);
-      let j = 0;
+        if (options.youtube.parameters) {
+          Object.keys(options.youtube.parameters).forEach(key => {
+            parameters.set(key, options.youtube.parameters[key]);
+          });
+        } // Start time parameter can have the format t=0m10s or t=<time_in_seconds> in share URLs,
+        // but in embed URLs the parameter must be called 'start' and time must be in seconds
 
-      while (timeParts.length > 0) {
-          /* eslint-disable no-restricted-properties */
-        startTime += Number(timeParts.pop()) * Math.pow(60, j);
-          /* eslint-enable no-restricted-properties */
-        j += 1;
+
+        const timeParameter = parameters.get('t');
+
+        if (timeParameter !== undefined) {
+          let startTime = 0;
+          const timeParts = timeParameter.match(/[0-9]+/g);
+          let j = 0;
+
+          while (timeParts.length > 0) {
+            /* eslint-disable no-restricted-properties */
+            startTime += Number(timeParts.pop()) * Math.pow(60, j);
+            /* eslint-enable no-restricted-properties */
+
+            j += 1;
+          }
+
+          parameters.set('start', startTime);
+          parameters.delete('t');
+        }
+
+        parameters.delete('v');
+        parameters.delete('feature');
+        parameters.delete('origin');
+        const parameterArray = Array.from(parameters, p => p.join('='));
+        const parameterPos = videoID.indexOf('?');
+        let finalUrl = 'https://www.youtube';
+        if (options.youtube.nocookie || url.indexOf('youtube-nocookie.com') > -1) finalUrl += '-nocookie';
+        finalUrl += '.com/embed/' + (parameterPos > -1 ? videoID.substr(0, parameterPos) : videoID);
+        if (parameterArray.length > 0) finalUrl += '?' + parameterArray.join('&');
+        return finalUrl;
       }
-      parameters.set('start', startTime);
-      parameters.delete('t');
-    }
 
-    parameters.delete('v');
-    parameters.delete('feature');
-    parameters.delete('origin');
+    case 'vimeo':
+      return 'https://player.vimeo.com/video/' + videoID;
 
-    const parameterArray = Array.from(parameters, p => p.join('='));
-    const parameterPos = videoID.indexOf('?');
+    case 'vine':
+      return 'https://vine.co/v/' + videoID + '/embed/' + options.vine.embed;
 
-    let finalUrl = 'https://www.youtube';
-    if (options.youtube.nocookie || url.indexOf('youtube-nocookie.com') > -1) finalUrl += '-nocookie';
-    finalUrl += '.com/embed/' + (parameterPos > -1 ? videoID.substr(0, parameterPos) : videoID);
-    if (parameterArray.length > 0) finalUrl += '?' + parameterArray.join('&');
-    return finalUrl;
-  }
-  case 'vimeo':
-    return 'https://player.vimeo.com/video/' + videoID;
-  case 'vine':
-    return 'https://vine.co/v/' + videoID + '/embed/' + options.vine.embed;
-  case 'prezi':
-    return 'https://prezi.com/embed/' + videoID +
-        '/?bgcolor=ffffff&amp;lock_to_path=0&amp;autoplay=0&amp;autohide_ctrls=0&amp;' +
-        'landing_data=bHVZZmNaNDBIWnNjdEVENDRhZDFNZGNIUE43MHdLNWpsdFJLb2ZHanI5N1lQVHkxSHFxazZ0UUNCRHloSXZROHh3PT0&amp;' +
-        'landing_sign=1kD6c0N6aYpMUS0wxnQjxzSqZlEB8qNFdxtdjYhwSuI';
-  case 'osf':
-    return 'https://mfr.osf.io/render?url=https://osf.io/' + videoID + '/?action=download';
-  case 'local':
-    return videoID;
-  default:
-    return service;
+    case 'prezi':
+      return 'https://prezi.com/embed/' + videoID + '/?bgcolor=ffffff&amp;lock_to_path=0&amp;autoplay=0&amp;autohide_ctrls=0&amp;' + 'landing_data=bHVZZmNaNDBIWnNjdEVENDRhZDFNZGNIUE43MHdLNWpsdFJLb2ZHanI5N1lQVHkxSHFxazZ0UUNCRHloSXZROHh3PT0&amp;' + 'landing_sign=1kD6c0N6aYpMUS0wxnQjxzSqZlEB8qNFdxtdjYhwSuI';
+
+    case 'osf':
+      return 'https://mfr.osf.io/render?url=https://osf.io/' + videoID + '/?action=download';
+
+    case 'local':
+      return videoID;
+
+    default:
+      return service;
   }
 }
 
@@ -197,34 +208,25 @@ function tokenizeVideo(md, options) {
       num = Math.random() * 0x10000;
 
       if (videoID.match(checkUrl)) {
-        return '<div id="' + num + '" class="mfr mfr-file"></div><script>' +
-          '$(document).ready(function () {new mfr.Render("' + num + '", "' + videoID + '");' +
-          '    }); </script>';
+        return '<div id="' + num + '" class="mfr mfr-file"></div><script>' + '$(document).ready(function () {new mfr.Render("' + num + '", "' + videoID + '");' + '    }); </script>';
       }
-      return '<div id="' + num + '" class="mfr mfr-file"></div><script>' +
-        '$(document).ready(function () {new mfr.Render("' + num + '", "https://mfr.osf.io/' +
-        'render?url=https://osf.io/' + videoID + '/?action=download%26mode=render");' +
-        '    }); </script>';
+
+      return '<div id="' + num + '" class="mfr mfr-file"></div><script>' + '$(document).ready(function () {new mfr.Render("' + num + '", "https://mfr.osf.io/' + 'render?url=https://osf.io/' + videoID + '/?action=download%26mode=render");' + '    }); </script>';
     }
 
     if (service === 'local' && videoID) {
       const localPlayerAttrs = [];
-
       const keys = Object.keys(options[service]);
       const values = Object.values(options[service]);
 
       for (let i = 0; i < keys.length; i += 1) {
         localPlayerAttrs.push(keys[i] + '="' + values[i] + '"');
       }
+
       return '<video ' + localPlayerAttrs.join(' ') + '><source src="' + videoID + '" type="video/webm" /></video>';
     }
 
-    return videoID === '' ? '' :
-      '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item ' +
-      service + '-player" type="text/html" width="' + (options[service].width) +
-      '" height="' + (options[service].height) +
-      '" src="' + options.url(service, videoID, tokens[idx].url, options) +
-      '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
+    return videoID === '' ? '' : '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item ' + service + '-player" type="text/html" width="' + options[service].width + '" height="' + options[service].height + '" src="' + options.url(service, videoID, tokens[idx].url, options) + '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>';
   }
 
   return tokenizeReturn;
@@ -232,17 +234,37 @@ function tokenizeVideo(md, options) {
 
 const defaults = {
   url: videoUrl,
-  youtube: { width: 640, height: 390, nocookie: false },
-  vimeo: { width: 500, height: 281 },
-  vine: { width: 600, height: 600, embed: 'simple' },
-  prezi: { width: 550, height: 400 },
-  osf: { width: '100%', height: '100%' },
-  local: { controls: true, allowfullscreen: true }
+  youtube: {
+    width: 640,
+    height: 390,
+    nocookie: false
+  },
+  vimeo: {
+    width: 500,
+    height: 281
+  },
+  vine: {
+    width: 600,
+    height: 600,
+    embed: 'simple'
+  },
+  prezi: {
+    width: 550,
+    height: 400
+  },
+  osf: {
+    width: '100%',
+    height: '100%'
+  },
+  local: {
+    controls: true,
+    allowfullscreen: true
+  }
 };
-
-export default function videoPlugin(md, options) {
+function videoPlugin(md, options) {
   let theOptions = options;
   let theMd = md;
+
   if (theOptions) {
     Object.keys(defaults).forEach(function checkForKeys(key) {
       if (typeof theOptions[key] === 'undefined') {
@@ -252,6 +274,10 @@ export default function videoPlugin(md, options) {
   } else {
     theOptions = defaults;
   }
+
   theMd.renderer.rules.video = tokenizeVideo(theMd, theOptions);
   theMd.inline.ruler.before('emphasis', 'video', videoEmbed(theMd, theOptions));
 }
+
+export default videoPlugin;
+//# sourceMappingURL=markdownItVideo.mjs.map

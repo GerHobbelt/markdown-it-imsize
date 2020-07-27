@@ -1,27 +1,32 @@
-/* eslint func-names: ["error", "never"] */
-var path = require('path');
-var generate = require('markdown-it-testgen');
-var assert = require('assert');
+
+/* eslint-env mocha, es6 */
+
+let path = require('path');
+const generate = require('@gerhobbelt/markdown-it-testgen');
+let assert = require('assert');
+
+const Md = require('@gerhobbelt/markdown-it');
+const plugin = require('../');
 
 function getMfrId(html) {
   return html.split('"')[1];
 }
 
 describe('markdown-it-video', function () {
-  var md = require('markdown-it')({
+  let md = Md({
     html: true,
     linkify: true,
-    typography: true,
-  }).use(require('../'));
+    typography: true
+  }).use(plugin);
   generate(path.join(__dirname, 'fixtures/video.txt'), md);
 });
 
 describe('markdown-it-video: options', function () {
-  var md = require('markdown-it')({
+  let md = Md({
     html: true,
     linkify: true,
-    typography: true,
-  }).use(require('../'), {
+    typography: true
+  }).use(plugin, {
     youtube: {
       width: 640,
       height: 390,
@@ -29,15 +34,15 @@ describe('markdown-it-video: options', function () {
       parameters: {
         rel: 0,
         fs: 0,
-        autoplay: 0,
-      },
+        autoplay: 0
+      }
     },
     local: {
       controls: false,
-      allowfullscreen: false,
-    },
+      allowfullscreen: false
+    }
   });
-  var renderedHtml;
+  let renderedHtml;
 
   it('normal to nocookie', function () {
     renderedHtml = md.render('@[youtube](youtube.com/v/0zM3nApSvMg)');
@@ -58,13 +63,13 @@ describe('markdown-it-video: options', function () {
 // Because the mfr iframe requires a random id these tests cannont be part of
 // the markdown-it-testgen fixture
 describe('markdown-it-mfr', function () {
-  var md = require('markdown-it')({
+  let md = Md({
     html: true,
     linkify: true,
-    typography: true,
-  }).use(require('../'));
-  var renderedHtml;
-  var id;
+    typography: true
+  }).use(plugin);
+  let renderedHtml;
+  let id;
 
   it('make sure normal iframe generates properly when empty', function () {
     renderedHtml = md.render('@[osf]()');

@@ -1,6 +1,6 @@
 # Releasing
 
-* On `master`, update `package.json` with new version number. Follow [semver](http://semver.org/).
+* On `markdown-it-video` branch, update `package.json` with new version number. Follow [semver](http://semver.org/).
 
 ```json
   "version": "63.12.0",
@@ -37,5 +37,5 @@ git push --tags origin cos
 * Publish to npm.
 
 ```
-npm publish --access=public
+npm run pub
 ```

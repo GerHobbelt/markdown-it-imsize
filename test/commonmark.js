@@ -1,9 +1,12 @@
-'use strict';
 
+/* eslint-env mocha, es6 */
 
-var p      = require('path');
-var load   = require('@gerhobbelt/markdown-it-testgen').load;
-var assert = require('chai').assert;
+let p      = require('path');
+let load   = require('@gerhobbelt/markdown-it-testgen').load;
+let assert = require('assert');
+
+const Md = require('@gerhobbelt/markdown-it');
+const plugin = require('../');
 
 function normalize(text) {
   return text.replace(/<blockquote>\n<\/blockquote>/g, '<blockquote></blockquote>');
@@ -14,7 +17,7 @@ function generate(path, md) {
   load(path, function (data) {
     data.meta = data.meta || {};
 
-    var desc = data.meta.desc || p.relative(path, data.file);
+    let desc = data.meta.desc || p.relative(path, data.file);
 
     (data.meta.skip ? describe.skip : describe)(desc, function () {
       data.fixtures.forEach(function (fixture) {
@@ -27,7 +30,8 @@ function generate(path, md) {
 }
 
 describe('CommonMark', function () {
-  var md = require('@gerhobbelt/markdown-it')('commonmark').use(require('../'));
+  let md = Md('commonmark').use(plugin);
 
   generate(p.join(__dirname, 'fixtures/commonmark/good.txt'), md);
 });
+

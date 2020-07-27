@@ -24,9 +24,12 @@
     prezi: { width: 550, height: 400 }
   })
 ```
+
+
 #### Inline style
 
 This plugin is made to work in the inline style. If you'd like a block-style, you may be interested in https://github.com/rotorz/markdown-it-block-embed
+
 
 #### YouTube
 
